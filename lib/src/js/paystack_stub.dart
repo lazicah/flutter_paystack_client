@@ -1,40 +1,43 @@
 import 'package:flutter/material.dart';
 
-Handler setup(SetupData data) {
-  throw UnimplementedError();
+import 'js_stub.dart';
+
+class PaystackPop {
+  PaystackPop();
+
+  void newTransaction(TransactionConfig config) {
+    throw UnimplementedError();
+  }
 }
 
-abstract class Handler {
-  void openIframe();
-}
-
-class SetupData {
+class TransactionConfig {
   final String? key;
   final String? email;
   final int amount;
-  final String? ref;
+  final String? reference;
 
-  final VoidCallback? onClose;
-  final PaystackCallback? callback;
+  final JSExportedDartFunction? onSuccess;
+  final JSExportedDartFunction? onCancel;
 
-  SetupData({
+  TransactionConfig({
     required this.key,
     required this.email,
     required this.amount,
-    required this.ref,
-    this.onClose,
-    this.callback,
+    this.reference,
+    this.onSuccess,
+    this.onCancel,
   });
 }
 
-abstract class ChargeResponse {
+abstract class TransactionResponse {
   String get message;
 
   String get reference;
 
-  String get response;
-
   String get status;
+
+  String? get transaction;
 }
 
-typedef PaystackCallback(ChargeResponse response);
+typedef PaystackOnSuccess = void Function(TransactionResponse response);
+typedef PaystackOnCancel = void Function();

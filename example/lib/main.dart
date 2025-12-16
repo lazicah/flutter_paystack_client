@@ -2,13 +2,12 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_paystack_client/flutter_paystack_client.dart';
 
-import '.env.dart';
-
 const String appName = 'Paystack Example';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await PaystackClient.initialize(paystackPublicKey);
+  await PaystackClient.initialize(
+      'pk_live_9f0eca6c9ba16197e9d9eb4295b02ffeb43bbd0e');
 
   runApp(MyApp());
 }

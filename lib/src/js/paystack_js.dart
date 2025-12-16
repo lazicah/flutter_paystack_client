@@ -1,55 +1,39 @@
-@JS()
-library paystack_js;
+import 'dart:js_interop';
 
-import 'package:flutter/material.dart';
-import "package:js/js.dart";
-
+/// Thin JS interop bindings for the global `PaystackPop` V2 popup.
 @JS('PaystackPop')
-class PaystackPop {
-  @JS('setup')
-  external static Handler setup(SetupData data);
+extension type PaystackPop._(JSObject _) implements JSObject {
+  external factory PaystackPop();
+  external void newTransaction(TransactionConfig config);
 }
 
 @JS()
 @anonymous
-class Handler {
-  external void openIframe();
-}
-
-@JS()
-@anonymous
-class SetupData {
-  external factory SetupData({
+extension type TransactionConfig._(JSObject _) implements JSObject {
+  external factory TransactionConfig({
     required String key,
     required String email,
     required int amount,
-    required String ref,
-    VoidCallback? onClose,
-    PaystackCallback? callback,
+    String? reference,
+    JSExportedDartFunction? onSuccess,
+    JSExportedDartFunction? onCancel,
   });
 
-  external String key;
-  external String email;
-  external int amount;
-  external String ref;
-  external VoidCallback onClose;
-  external PaystackCallback callback;
+  external String get key;
+  external String get email;
+  external int get amount;
+  external String? get reference;
+  external JSExportedDartFunction? get onSuccess;
+  external JSExportedDartFunction? get onCancel;
 }
 
 @JS()
-@anonymous
-class ChargeResponse {
+extension type TransactionResponse._(JSObject _) implements JSObject {
   external String get message;
-
   external String get reference;
-
-  external String get response;
-
   external String get status;
+  external String? get transaction; // transaction id returned by Paystack
 }
 
-typedef PaystackCallback(ChargeResponse response);
-
-Handler setup(SetupData data) {
-  return PaystackPop.setup(data);
-}
+typedef PaystackOnSuccess = void Function(TransactionResponse response);
+typedef PaystackOnCancel = void Function();
